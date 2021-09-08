@@ -4,22 +4,20 @@ import { Route, Switch, useRouteMatch } from 'react-router';
 import Main from './Main';
 import AddEditPage from './addEdit';
 
-Photo.propTypes = {
-    
-};
+Photo.propTypes = {};
 
 function Photo(props) {
     const match = useRouteMatch();
-
-    return (  
-        <Switch>
-            <Route exact path={match.url} component={Main}/>
     
+    return (
+        <Switch>
+            <Route exact path={match.url} component={Main} />
+
             <Route path={`${match.url}/add`} component={AddEditPage} />
             <Route path={`${match.url}/:photoId`} />
-    
-            <Route  />
-      </Switch>
+
+            <Route />
+        </Switch>
     );
 }
 
