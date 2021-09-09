@@ -8,6 +8,7 @@ import { Formik, Form, FastField } from 'formik';
 import InputField from 'custome-fields/inputFiled';
 import SelectField from 'custome-fields/SelectField';
 import RandomPhotoField from 'custome-fields/randomPhotoField';
+import * as Yup from 'yup';
 
 PhotoForm.propTypes = {
     // isAddMode: ,
@@ -23,11 +24,25 @@ function PhotoForm(props) {
     const initialValues = {
         title: '',
         categoryId: null,
+        photo: ''
     };
+
+    const validationSchema = Yup.object().shape({
+        title: Yup.string().required("This field is required!"),
+
+        categoryId: Yup.number().required("this field is required!").nullable(),
+
+        photo: Yup.string().when('categoryId', {
+        is: 1,
+        then: Yup.string().required("this field is required!"),
+        otherwise: Yup.string().notRequired(),
+        })
+    })
 
     return (
         <Formik 
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={value => console.log("submit", value)}
         >
             {(formikProps) => {
@@ -50,12 +65,11 @@ function PhotoForm(props) {
                             options={PHOTO_CATEGORY_OPTIONS}
                         />
 
-                            <FastField
+                        <FastField
                                 name="photo"
                                 component={RandomPhotoField}
                                 label="Photo"
-                            />
-
+                        />
 
                         <FormGroup>
                             <Button color="primary">Add to album</Button>
